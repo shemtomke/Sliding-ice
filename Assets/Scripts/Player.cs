@@ -12,6 +12,13 @@ public class Player : MonoBehaviour
     Touch touch;
     Vector2 dragStartPos;
 
+    DragRender dragRender;
+
+    private void Start()
+    {
+        dragRender = FindObjectOfType<DragRender>();
+    }
+
     private void Update()
     {
         Move();
@@ -61,15 +68,12 @@ public class Player : MonoBehaviour
     }
     void Dragging()
     {
+        dragRender.topDragNotification.sprite = dragRender.topDragUINotifications[Random.Range(0, dragRender.topDragUINotifications.Count)];
         Debug.Log("Dragging!");
     }
     void DragRelease()
     {
         Debug.Log("Dragging Released!");
-        Vector2 drafReleasePos = Camera.main.ScreenToWorldPoint(touch.position);
-        Vector2 force = dragStartPos - drafReleasePos;
-        Vector2 clampedForce = Vector2.ClampMagnitude(force, maxDrag) * power;
-
-        rb.AddForce(clampedForce, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up, ForceMode2D.Impulse);
     }
 }
