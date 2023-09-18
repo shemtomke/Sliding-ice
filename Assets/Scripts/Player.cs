@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float power = 10f;
-    public float maxDrag = 5f;
+    public float power;
+    public float maxDrag;
     public Rigidbody2D rb;
 
     Touch touch;
@@ -63,17 +63,24 @@ public class Player : MonoBehaviour
     }
     void DragStart()
     {
-        dragStartPos = Camera.main.ScreenToWorldPoint(touch.position);
+        dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log("Dragging Start!");
     }
     void Dragging()
     {
-        dragRender.topDragNotification.sprite = dragRender.topDragUINotifications[Random.Range(0, dragRender.topDragUINotifications.Count)];
-        Debug.Log("Dragging!");
+        Vector2 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // use touch position
+        float distance = Vector2.Distance(dragStartPos, currentPos);
+        maxDrag += distance;
+
+        Debug.Log("Dragging Distance: " + distance);
+
+        int dist = Mathf.FloorToInt(distance);
+        dragRender.topDragNotification.sprite = dragRender.topDragUINotifications[dist];
+        dragRender.dragDot.GetComponent<SpriteRenderer>().sprite = dragRender.dragDots[dist];
     }
     void DragRelease()
     {
         Debug.Log("Dragging Released!");
-        rb.AddForce(Vector2.up, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * (power * maxDrag), ForceMode2D.Impulse);
     }
 }

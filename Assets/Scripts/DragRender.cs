@@ -8,11 +8,10 @@ public class DragRender : MonoBehaviour
     public List<Sprite> topDragUINotifications;
     public List<Sprite> dragDots;
 
-    public Vector2 startDragPos;
+    public Sprite defaultDrag;
 
     public Image topDragNotification;
-
-    public Sprite defaultDrag;
+    public GameObject dragDot;
 
     private void Start()
     {
