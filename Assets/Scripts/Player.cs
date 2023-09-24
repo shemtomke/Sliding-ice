@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     public float maxDrag;
     public Rigidbody2D rb;
 
+    public bool isStop = false;
+    public bool isDoneDragging = false; 
+
     Touch touch;
     Vector2 dragStartPos;
 
@@ -21,7 +24,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        if (!isDoneDragging)
+            Move();
+        else
+            Slide();
     }
     void Move()
     {
@@ -92,5 +98,45 @@ public class Player : MonoBehaviour
         rb.AddForce(Vector2.up * (power * maxDrag), ForceMode2D.Impulse);
         dragRender.dragDot.SetActive(false);
         dragRender.topDragNotification.gameObject.SetActive(false);
+        isDoneDragging = true;
+    }
+    void Slide()
+    {
+        // move the player right or left or up or down to meet the target
+
+        // touch direction
+        if (Input.touchCount > 0)
+        {
+            touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                
+            }
+            if (touch.phase == TouchPhase.Moved)
+            {
+                
+            }
+            if (touch.phase == TouchPhase.Moved)
+            {
+                
+            }
+        }
+
+        // Check if the left mouse button is pressed
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Start dragging!");
+        }
+        // Check if the left mouse button is held down and moving
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("Get where to drag!");
+        }
+        // Check if the left mouse button was released
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("Drag to that position!");
+        }
     }
 }
