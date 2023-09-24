@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float slideForce;
     public float power;
     public float maxDrag;
     public Rigidbody2D rb;
@@ -102,41 +103,45 @@ public class Player : MonoBehaviour
     }
     void Slide()
     {
-        // move the player right or left or up or down to meet the target
+        Vector2 targetPosition = Vector2.zero; // Initialize the target position as (0, 0) or your desired default position
 
-        // touch direction
+        // Touch input handling
         if (Input.touchCount > 0)
         {
             touch = Input.GetTouch(0);
 
             if (touch.phase == TouchPhase.Began)
             {
-                
+                // Store the touch start position as the target
+                targetPosition = touch.position;
             }
-            if (touch.phase == TouchPhase.Moved)
+            else if (touch.phase == TouchPhase.Moved)
             {
-                
-            }
-            if (touch.phase == TouchPhase.Moved)
-            {
-                
+                // Calculate the direction vector from the current touch position to the target position
+                Vector2 direction = (touch.position - targetPosition).normalized;
+
+                // Move the player in the calculated direction
+                transform.Translate(direction * slideForce * Time.deltaTime);
             }
         }
 
-        // Check if the left mouse button is pressed
+        // Mouse input handling
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Start dragging!");
+            targetPosition = (Vector2)Input.mousePosition;
         }
-        // Check if the left mouse button is held down and moving
-        if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0))
         {
             Debug.Log("Get where to drag!");
+
+            Vector2 direction = ((Vector2)Input.mousePosition - targetPosition).normalized;
+            transform.Translate(direction * slideForce * Time.deltaTime);
         }
-        // Check if the left mouse button was released
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
             Debug.Log("Drag to that position!");
+            targetPosition = Vector2.zero; // Reset the target position after releasing the mouse button
         }
     }
 }

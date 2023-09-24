@@ -4,20 +4,33 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public float radius;
-    public Vector2 pos;
     public bool isWithinRange;
+    public GameObject player;
 
     private void Start()
     {
-        pos = transform.position;
-
-        // Get the radius of the target
-
+        
     }
-    // as you get further away the less points - perferction! (radius)
+    private void Update()
+    {
+        DetectVictory();
+    }
+    void DetectVictory()
+    {
+        // Get the bounds of the detector and target objects
+        Bounds targetBounds = this.GetComponent<SpriteRenderer>().bounds;
+        Bounds playerBounds = player.GetComponent<SpriteRenderer>().bounds;
 
-    // player has completed the level - hit the red circle.
+        // Check if the target object's bounds are fully or partially inside the detector's bounds
+        isWithinRange = targetBounds.Contains(playerBounds.min) && targetBounds.Contains(playerBounds.max);
 
-
+        if (isWithinRange)
+        {
+            Debug.Log("Target object is fully or partially inside the detector's bounds.");
+        }
+        else
+        {
+            Debug.Log("Target object is outside the detector's bounds.");
+        }
+    }
 }
