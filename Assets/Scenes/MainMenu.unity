@@ -2655,12 +2655,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f3e6deaf6fde24aaf5dedea89530be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLvl: 1
+  lastLevel: Level5
   levelObject:
   - {fileID: 661841033}
   - {fileID: 329356670}
   - {fileID: 818685448}
   - {fileID: 1184875476}
   - {fileID: 226962455}
+  levelsSprites:
+  - {fileID: 21300000, guid: 4626abce912e5db46aab0e917aaf27ed, type: 3}
+  - {fileID: 21300000, guid: f1783a38be7e2d1499abe7b81bbcfa21, type: 3}
+  - {fileID: 21300000, guid: a4f0c919b260ec24b931781956519a3d, type: 3}
+  - {fileID: 21300000, guid: 159d6fabc05f7aa468dadcd442712c9d, type: 3}
+  - {fileID: 21300000, guid: ae4ff84b582a6c5468862e4a6459fca1, type: 3}
   lockedLevel: {fileID: 21300000, guid: bebd5370e2cf9bc41844079cac771ef4, type: 3}
 --- !u!4 &1284847146
 Transform:

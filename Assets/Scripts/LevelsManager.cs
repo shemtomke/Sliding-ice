@@ -6,7 +6,11 @@ using UnityEngine.UI;
 
 public class LevelsManager : MonoBehaviour
 {
+    public int currentLvl = 1;
+    public string lastLevel;
+
     public GameObject[] levelObject;
+    public Sprite[] levelsSprites;
     public Sprite lockedLevel;
 
     private void Start()
@@ -21,8 +25,24 @@ public class LevelsManager : MonoBehaviour
             }
         }
     }
+    private void Update()
+    {
+        for (int i = 0; i < levelObject.Length; i++)
+        {
+            if(currentLvl == i)
+            {
+                levelObject[i].GetComponent<Image>().sprite = levelsSprites[i];
+                levelObject[i].GetComponent<Button>().interactable = true;
+            }
+        }
+    }
     public void Level(int lvl)
     {
         SceneManager.LoadScene(lvl);
+    }
+    public void NextLevel()
+    {
+        if (SceneManager.GetActiveScene().name != lastLevel)
+            currentLvl++;
     }
 }
