@@ -30,13 +30,24 @@ public class GameManager : MonoBehaviour
     }
     void GameStatus()
     {
-        if(target.isWithinRange)
+        if(target != null)
         {
-            Debug.Log("Win!");
+            if (target.isWithinRange)
+            {
+                Debug.Log("Win!");
+            }
+            else
+            {
+                Debug.Log("Loose!");
+            }
         }
-        else
-        {
-            Debug.Log("Loose!");
-        }
+    }
+    public void Sound()
+    {
+
+    }
+    public void Language()
+    {
+
     }
 }

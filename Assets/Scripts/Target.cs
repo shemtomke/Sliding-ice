@@ -6,10 +6,11 @@ public class Target : MonoBehaviour
 {
     public bool isWithinRange;
     public GameObject player;
-    public GameManager gameManager;
+    GameManager gameManager;
 
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         gameManager.victoryUI.SetActive(false);
         gameManager.gameOverUI.SetActive(false);
     }
