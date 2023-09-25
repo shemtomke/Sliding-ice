@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float maxDrag;
     public Rigidbody2D rb;
 
+    public float stopThreshold = 0.01f;
     public bool isStop = false;
     public bool isDoneDragging = false; 
 
@@ -29,6 +30,16 @@ public class Player : MonoBehaviour
             Move();
         else
             Slide();
+
+        // Check if the velocity magnitude is below the stop threshold
+        if (rb.velocity.magnitude < stopThreshold)
+        {
+            isStop = true;
+        }
+        else
+        {
+            isStop = false;
+        }
     }
     void Move()
     {

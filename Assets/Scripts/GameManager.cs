@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("GameOver")]
-
+    public GameObject gameOverUI;
 
     [Header("Victory")]
-
+    public GameObject victoryUI;
 
     [Header("Main Menu")]
 

@@ -6,16 +6,18 @@ public class Target : MonoBehaviour
 {
     public bool isWithinRange;
     public GameObject player;
+    public GameManager gameManager;
 
     private void Start()
     {
-        
+        gameManager.victoryUI.SetActive(false);
+        gameManager.gameOverUI.SetActive(false);
     }
     private void Update()
     {
-        DetectVictory();
+        DetectRange();
     }
-    void DetectVictory()
+    void DetectRange()
     {
         // Get the bounds of the detector and target objects
         Bounds targetBounds = this.GetComponent<SpriteRenderer>().bounds;
@@ -26,11 +28,27 @@ public class Target : MonoBehaviour
 
         if (isWithinRange)
         {
-            Debug.Log("Target object is fully or partially inside the detector's bounds.");
+            Victory();
         }
         else
         {
-            Debug.Log("Target object is outside the detector's bounds.");
+            GameOver();
+        }
+    }
+    void Victory()
+    {
+        if(player.GetComponent<Player>().isStop && player.GetComponent<Player>().isDoneDragging)
+        {
+            // Victory GameObject set to true
+            gameManager.victoryUI.SetActive(true);
+        }
+    }
+    void GameOver()
+    {
+        if (player.GetComponent<Player>().isStop && player.GetComponent<Player>().isDoneDragging)
+        {
+            // GameOver GameObject set to true
+            gameManager.gameOverUI.SetActive(true);
         }
     }
 }
