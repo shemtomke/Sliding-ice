@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Lang currentLanguage = Lang.eng;
+    public Sprite[] langSprites; // Assign your 3 sprites in the Inspector.
+    private int currentSpriteIndex = 0;
+
     public Sprite mute, unmute;
     public Sprite vibrate, unVibrate;
     public AudioSource bgMusic;
@@ -58,8 +62,23 @@ public class GameManager : MonoBehaviour
 
         vibrateObj.GetComponent<Image>().sprite = isVibrate ? vibrate : unVibrate;
     }
-    public void Language()
+    public void Language(GameObject langObj)
     {
+        // Increment the index to move to the next sprite.
+        currentSpriteIndex++;
 
+        // If the index exceeds the number of sprites, wrap it back to 0.
+        if (currentSpriteIndex >= langSprites.Length)
+        {
+            currentSpriteIndex = 0;
+        }
+
+        // Set the button's sprite to the current sprite.
+        langObj.GetComponent<Image>().sprite = langSprites[currentSpriteIndex];
+        currentLanguage = (Lang)(((int)currentLanguage + 1) % System.Enum.GetValues(typeof(Lang)).Length);
     }
+}
+public enum Lang
+{
+    eng, port, rus
 }

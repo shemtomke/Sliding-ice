@@ -1986,13 +1986,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269bc471d8422ba49a582ea3a4e9fa27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slideForce: 0.5
-  power: 5
+  slideForce: 0.005
+  power: 2
   maxDrag: 0
   rb: {fileID: 1192161026}
   stopThreshold: 0.05
   isStop: 0
   isDoneDragging: 0
+  isSliding: 0
 --- !u!58 &1192161025
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2679,6 +2680,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1583123066}
+        m_TargetAssemblyTypeName: LevelsManager, Assembly-CSharp
+        m_MethodName: Level
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1576689933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2977,8 +2990,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d941431f2c3b22f4880507bc54937a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverUI: {fileID: 0}
-  victoryUI: {fileID: 0}
+  gameOverUI: {fileID: 1004414728}
+  victoryUI: {fileID: 290625928}
   isWithinRange: 0
   player: {fileID: 1192161023}
 --- !u!212 &1676558372

@@ -13,9 +13,11 @@ public class Player : MonoBehaviour
     public float stopThreshold = 0.01f;
     public bool isStop = false;
     public bool isDoneDragging = false; 
+    public bool isSliding = false;
 
     Touch touch;
     Vector2 dragStartPos;
+    Vector2 touchStartPos;
 
     DragRender dragRender;
 
@@ -35,6 +37,7 @@ public class Player : MonoBehaviour
         if (rb.velocity.magnitude < stopThreshold)
         {
             isStop = true;
+            rb.velocity = Vector3.zero;
         }
         else
         {
@@ -43,21 +46,24 @@ public class Player : MonoBehaviour
     }
     void Move()
     {
-        if(Input.touchCount > 0)
+        // Check for touch input
+        if (Input.touchCount > 0)
         {
-            touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(0); // Get the first touch
 
-            if(touch.phase == TouchPhase.Began)
+            switch (touch.phase)
             {
-                DragStart();
-            }
-            if (touch.phase == TouchPhase.Moved)
-            {
-                Dragging();
-            }
-            if (touch.phase == TouchPhase.Moved)
-            {
-                DragRelease();
+                case TouchPhase.Began:
+                    DragStart();
+                    break;
+
+                case TouchPhase.Moved:
+                    Dragging();
+                    break;
+
+                case TouchPhase.Ended:
+                    DragRelease();
+                    break;
             }
         }
 
@@ -82,7 +88,6 @@ public class Player : MonoBehaviour
     void DragStart()
     {
         dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log("Dragging Start!");
     }
     void Dragging()
     {
@@ -106,7 +111,6 @@ public class Player : MonoBehaviour
     }
     void DragRelease()
     {
-        Debug.Log("Dragging Released!");
         rb.AddForce(Vector2.up * (power * maxDrag), ForceMode2D.Impulse);
         dragRender.dragDot.SetActive(false);
         dragRender.topDragNotification.gameObject.SetActive(false);
@@ -114,45 +118,51 @@ public class Player : MonoBehaviour
     }
     void Slide()
     {
-        Vector2 targetPosition = Vector2.zero; // Initialize the target position as (0, 0) or your desired default position
-
-        // Touch input handling
         if (Input.touchCount > 0)
         {
-            touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && !isSliding)
             {
-                // Store the touch start position as the target
-                targetPosition = touch.position;
+                touchStartPos = Camera.main.ScreenToWorldPoint(touch.position);
+                isSliding = true;
             }
-            else if (touch.phase == TouchPhase.Moved)
+            else if (isSliding && touch.phase == TouchPhase.Moved)
             {
-                // Calculate the direction vector from the current touch position to the target position
-                Vector2 direction = (touch.position - targetPosition).normalized;
+                Vector2 touchCurrentPos = Camera.main.ScreenToWorldPoint(touch.position);
+                Vector2 slideDirection = touchCurrentPos - touchStartPos;
 
-                // Move the player in the calculated direction
-                transform.Translate(direction * slideForce * Time.deltaTime);
+                // You can choose to restrict sliding to a specific direction if needed.
+                // For example, to only slide horizontally, you can set slideDirection.y = 0;
+
+                rb.velocity += slideDirection.normalized * slideForce; // Add slide velocity to the existing velocity
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                isSliding = false; // Stop sliding when the touch is released
             }
         }
-
-        // Mouse input handling
-        if (Input.GetMouseButtonDown(0))
+        else if (Input.GetMouseButton(0)) // Check for mouse input
         {
-            Debug.Log("Start dragging!");
-            targetPosition = (Vector2)Input.mousePosition;
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            Debug.Log("Get where to drag!");
+            if (!isSliding)
+            {
+                touchStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                isSliding = true;
+            }
+            else
+            {
+                Vector2 touchCurrentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 slideDirection = touchCurrentPos - touchStartPos;
 
-            Vector2 direction = ((Vector2)Input.mousePosition - targetPosition).normalized;
-            transform.Translate(direction * slideForce * Time.deltaTime);
+                // You can choose to restrict sliding to a specific direction if needed.
+                // For example, to only slide horizontally, you can set slideDirection.y = 0;
+
+                rb.velocity += slideDirection.normalized * slideForce; // Add slide velocity to the existing velocity
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("Drag to that position!");
-            targetPosition = Vector2.zero; // Reset the target position after releasing the mouse button
+            isSliding = false; // Stop sliding when the mouse button is released
         }
     }
 }
