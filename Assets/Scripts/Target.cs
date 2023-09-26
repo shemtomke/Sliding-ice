@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    public GameObject gameOverUI;
+    public GameObject victoryUI;
+
     public bool isWithinRange;
     public GameObject player;
     GameManager gameManager;
@@ -11,8 +14,8 @@ public class Target : MonoBehaviour
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        gameManager.victoryUI.SetActive(false);
-        gameManager.gameOverUI.SetActive(false);
+        victoryUI.SetActive(false);
+        gameOverUI.SetActive(false);
     }
     private void Update()
     {
@@ -41,7 +44,7 @@ public class Target : MonoBehaviour
         if(player.GetComponent<Player>().isStop && player.GetComponent<Player>().isDoneDragging)
         {
             // Victory GameObject set to true
-            gameManager.victoryUI.SetActive(true);
+            victoryUI.SetActive(true);
         }
     }
     void GameOver()
@@ -49,7 +52,7 @@ public class Target : MonoBehaviour
         if (player.GetComponent<Player>().isStop && player.GetComponent<Player>().isDoneDragging)
         {
             // GameOver GameObject set to true
-            gameManager.gameOverUI.SetActive(true);
+            gameOverUI.SetActive(true);
         }
     }
 }
